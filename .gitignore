@@ -1,0 +1,14 @@
+# Игнорируем виртуальное окружение
+.venv/
+venv/
+env/
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Конфиги и логи
+.idea/
+.vscode/
+.DS_Store
