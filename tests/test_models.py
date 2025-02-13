@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: F401
 from src.models import Product, Category
 
 
@@ -35,6 +35,9 @@ def test_category_product_count():
     category1 = Category("Audio", "Audio Devices", [product1])
     category2 = Category("Displays", "Monitor Displays", [product2])
 
+    assert category1  # Теперь переменная используется
+    assert category2  # Теперь переменная используется
+
     assert Category.product_count == 2  # Всего два продукта
 
 
@@ -46,8 +49,8 @@ def test_category_count():
     category2 = Category("Tablets", "Tablet Devices", [])
     category3 = Category("Wearables", "Smartwatches", [])
 
+    assert category1  # Теперь переменная используется
+    assert category2  # Теперь переменная используется
+    assert category3  # Теперь переменная используется
+
     assert Category.category_count == 3  # Всего три категории
-
-
-
-
