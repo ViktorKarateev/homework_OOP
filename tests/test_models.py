@@ -121,4 +121,3 @@ def test_product_add_invalid():
 
     with pytest.raises(TypeError):
         product + 100  # Ошибка, так как складываем с числом
-

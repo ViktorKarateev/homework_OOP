@@ -35,4 +35,3 @@ for category in categories:
     print(f"Описание: {category.description}")
     print(f"Количество товаров: {len(category.products)}")
     print(f"Товары:\n{category.products}")
-
