@@ -90,3 +90,35 @@ def test_price_setter():
 
     product.price = -1000  # Попытка установить отрицательную цену
     assert product.price == 50000  # Цена не изменилась
+
+
+def test_product_str():
+    """Проверяем строковое представление продукта."""
+    product = Product("Test Product", "Test Description", 100.0, 5)
+    assert str(product) == "Test Product, 100.0 руб. Остаток: 5 шт."
+
+
+def test_category_str():
+    """Проверяем строковое представление категории."""
+    product1 = Product("Mouse", "Wireless Mouse", 50.0, 10)
+    product2 = Product("Keyboard", "Mechanical Keyboard", 120.0, 5)
+    category = Category("Accessories", "PC Accessories", [product1, product2])
+
+    assert str(category) == "Accessories, количество продуктов: 15 шт."
+
+
+def test_product_add():
+    """Проверяем сумму стоимости товаров через __add__."""
+    product1 = Product("Mouse", "Wireless Mouse", 50.0, 10)  # 50 * 10 = 500
+    product2 = Product("Keyboard", "Mechanical Keyboard", 120.0, 5)  # 120 * 5 = 600
+
+    assert product1 + product2 == 1100  # 500 + 600 = 1100
+
+
+def test_product_add_invalid():
+    """Проверяем, что нельзя сложить продукт с не-продуктом."""
+    product = Product("Mouse", "Wireless Mouse", 50.0, 10)
+
+    with pytest.raises(TypeError):
+        product + 100  # Ошибка, так как складываем с числом
+
