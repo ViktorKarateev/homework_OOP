@@ -1,9 +1,10 @@
+import os
 import json
 from models import Product, Category
 
-
-def load_categories_from_json(file_path: str) -> list:
+def load_categories_from_json(file_name: str) -> list:
     """Загружает категории и товары из JSON-файла и создает объекты."""
+    file_path = os.path.join(os.path.dirname(__file__), "..", "data", file_name)  # Путь к файлу JSON
     with open(file_path, "r", encoding="utf-8") as file:
         data = json.load(file)
 
