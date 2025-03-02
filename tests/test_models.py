@@ -123,25 +123,6 @@ def test_product_add_invalid():
         product + 100  # Ошибка, так как складываем с числом
 
 
-def test_smartphone_creation():
-    """Проверяем создание смартфона."""
-    phone = Smartphone("Test Phone", "Test Description", 1000.0, 2, 99.9, "Model X", 128, "Black")
-    assert phone.name == "Test Phone"
-    assert phone.efficiency == 99.9
-    assert phone.model == "Model X"
-    assert phone.memory == 128
-    assert phone.color == "Black"
-
-
-def test_lawn_grass_creation():
-    """Проверяем создание газонной травы."""
-    grass = LawnGrass("Test Grass", "Green grass", 200.0, 5, "Germany", "10 дней", "Зеленый")
-    assert grass.name == "Test Grass"
-    assert grass.country == "Germany"
-    assert grass.germination_period == "10 дней"
-    assert grass.color == "Зеленый"
-
-
 def test_add_same_class_products():
     """Проверяем сложение товаров одного класса."""
     phone1 = Smartphone("Phone A", "Description", 1000.0, 2, 99.9, "A", 128, "Black")
@@ -174,3 +155,15 @@ def test_add_valid_product():
 
     category.add_product(phone)
     assert len(category.products.split("\n")) == 1  # Проверяем, что телефон добавился
+
+
+def test_smartphone_creation():
+    phone = Smartphone("Test Phone", "Test Desc", 1000, 2, 90, "Test Model", 128, "Black")
+    assert phone.name == "Test Phone"
+    assert phone.get_info() == "Test Phone (Test Model) - 128GB, Black"
+
+
+def test_lawn_grass_creation():
+    grass = LawnGrass("Test Grass", "Green lawn", 200, 5, "Germany", "5 дней", "Зеленый")
+    assert grass.name == "Test Grass"
+    assert grass.get_info() == "Test Grass (Производство: Germany) - Зеленый, 5 дней"
