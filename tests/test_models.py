@@ -1,5 +1,5 @@
 import pytest  # noqa: F401
-from src.models import Product, Category
+from src.models import Product, Category, LawnGrass, Smartphone
 
 
 def test_product_initialization():
@@ -121,3 +121,56 @@ def test_product_add_invalid():
 
     with pytest.raises(TypeError):
         product + 100  # Ошибка, так как складываем с числом
+
+
+def test_smartphone_creation():
+    """Проверяем создание смартфона."""
+    phone = Smartphone("Test Phone", "Test Description", 1000.0, 2, 99.9, "Model X", 128, "Black")
+    assert phone.name == "Test Phone"
+    assert phone.efficiency == 99.9
+    assert phone.model == "Model X"
+    assert phone.memory == 128
+    assert phone.color == "Black"
+
+
+def test_lawn_grass_creation():
+    """Проверяем создание газонной травы."""
+    grass = LawnGrass("Test Grass", "Green grass", 200.0, 5, "Germany", "10 дней", "Зеленый")
+    assert grass.name == "Test Grass"
+    assert grass.country == "Germany"
+    assert grass.germination_period == "10 дней"
+    assert grass.color == "Зеленый"
+
+
+def test_add_same_class_products():
+    """Проверяем сложение товаров одного класса."""
+    phone1 = Smartphone("Phone A", "Description", 1000.0, 2, 99.9, "A", 128, "Black")
+    phone2 = Smartphone("Phone B", "Description", 2000.0, 3, 98.5, "B", 256, "White")
+
+    assert phone1 + phone2 == 8000.0  # (1000 * 2) + (2000 * 3) = 8000
+
+
+def test_add_different_class_products():
+    """Проверяем, что нельзя сложить разные классы товаров."""
+    phone = Smartphone("Phone", "Description", 1000.0, 2, 99.9, "X", 128, "Black")
+    grass = LawnGrass("Grass", "Green", 200.0, 5, "Germany", "10 дней", "Зеленый")
+
+    with pytest.raises(TypeError):
+        phone + grass  # Ошибка, так как складываем разные классы
+
+
+def test_add_invalid_product():
+    """Проверяем, что нельзя добавить в категорию не-продукт."""
+    category = Category("Смартфоны", "Описание", [])
+
+    with pytest.raises(TypeError):
+        category.add_product("Not a product")  # Ошибка
+
+
+def test_add_valid_product():
+    """Проверяем, что можно добавить продукт или его наследника."""
+    category = Category("Смартфоны", "Описание", [])
+    phone = Smartphone("Phone", "Description", 1000.0, 2, 99.9, "X", 128, "Black")
+
+    category.add_product(phone)
+    assert len(category.products.split("\n")) == 1  # Проверяем, что телефон добавился

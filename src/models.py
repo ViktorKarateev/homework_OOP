@@ -24,10 +24,11 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        """Складывает стоимость товаров на складе."""
-        if isinstance(other, Product):
-            return (self.price * self.quantity) + (other.price * other.quantity)
-        raise TypeError("Складывать можно только объекты класса Product")
+        """Складывает стоимость товаров на складе, если товары одного типа."""
+        if type(self) is not type(other):
+            raise TypeError("Можно складывать только объекты одного класса")
+
+        return (self.price * self.quantity) + (other.price * other.quantity)
 
     @classmethod
     def new_product(cls, data: dict, products_list: list):
@@ -54,7 +55,10 @@ class Category:
         Category.product_count += len(products)
 
     def add_product(self, product):
-        """Добавляет продукт в категорию."""
+        """Добавляет продукт в категорию, если он является экземпляром Product или его наследников."""
+        if not isinstance(product, Product):  # Проверяем, является ли продукт экземпляром Product или его наследников
+            raise TypeError("Можно добавлять только объекты класса Product или его наследников")
+
         self.__products.append(product)
         Category.product_count += 1
 
@@ -67,3 +71,24 @@ class Category:
         """Строковое представление категории."""
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+
+class Smartphone(Product):
+    """Класс для смартфонов, наследуется от Product."""
+
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency  # Производительность
+        self.model = model  # Модель
+        self.memory = memory  # Встроенная память
+        self.color = color  # Цвет
+
+
+class LawnGrass(Product):
+    """Класс для газонной травы, наследуется от Product."""
+
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country  # Страна-производитель
+        self.germination_period = germination_period  # Срок прорастания
+        self.color = color  # Цвет
