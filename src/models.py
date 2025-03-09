@@ -1,23 +1,48 @@
-class Product:
-    """Класс продукта с характеристиками."""
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+    """Абстрактный базовый класс для всех товаров."""
 
     def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
         self.description = description
-        self.__price = price  # Делаем цену приватной
+        self._price = price  # Защищаемый атрибут
         self.quantity = quantity
+
+    @abstractmethod
+    def get_info(self):
+        """Абстрактный метод, который должен реализовать каждый продукт."""
+        pass
 
     @property
     def price(self):
-        return self.__price
+        return self._price
 
     @price.setter
     def price(self, new_price):
-        """Сеттер: проверяет и устанавливает цену."""
         if new_price > 0:
-            self.__price = new_price
+            self._price = new_price
         else:
-            print("Цена не должна быть нулевая или отрицательная")
+            print("Ошибка: Цена не может быть отрицательной или равной нулю")
+
+
+class LoggingMixin:
+    """Миксин для логирования создания объектов."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(f"Создан объект: {self.__class__.__name__} с параметрами {self.__dict__}")
+
+
+class Product(LoggingMixin, BaseProduct):
+    """Класс продукта с характеристиками."""
+
+    def __init__(self, name: str, description: str, price: float, quantity: int):
+        super().__init__(name, description, price, quantity)  # Вызываем конструктор родителя
+
+    def get_info(self):
+        """Метод, который должен быть реализован в каждом классе-наследнике BaseProduct."""
+        return f"{self.name} ({self.description}) - {self.price} руб."
 
     def __str__(self):
         """Строковое представление продукта."""
@@ -74,21 +99,27 @@ class Category:
 
 
 class Smartphone(Product):
-    """Класс для смартфонов, наследуется от Product."""
+    """Класс смартфона — наследник `Product`."""
 
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
-        self.efficiency = efficiency  # Производительность
-        self.model = model  # Модель
-        self.memory = memory  # Встроенная память
-        self.color = color  # Цвет
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def get_info(self):
+        return f"{self.name} ({self.model}) - {self.memory}GB, {self.color}"
 
 
 class LawnGrass(Product):
-    """Класс для газонной травы, наследуется от Product."""
+    """Класс газонной травы — наследник `Product`."""
 
     def __init__(self, name, description, price, quantity, country, germination_period, color):
         super().__init__(name, description, price, quantity)
-        self.country = country  # Страна-производитель
-        self.germination_period = germination_period  # Срок прорастания
-        self.color = color  # Цвет
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    def get_info(self):
+        return f"{self.name} (Производство: {self.country}) - {self.color}, {self.germination_period}"
