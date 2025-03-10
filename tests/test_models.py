@@ -167,3 +167,20 @@ def test_lawn_grass_creation():
     grass = LawnGrass("Test Grass", "Green lawn", 200, 5, "Germany", "5 дней", "Зеленый")
     assert grass.name == "Test Grass"
     assert grass.get_info() == "Test Grass (Производство: Germany) - Зеленый, 5 дней"
+
+
+def test_product_zero_quantity_raises():
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Тестовый товар", "Описание", 1000.0, 0)
+
+
+def test_middle_price_with_products():
+    p1 = Product("Товар1", "Описание", 100.0, 3)
+    p2 = Product("Товар2", "Описание", 200.0, 1)
+    category = Category("Тест", "Описание", [p1, p2])
+    assert category.middle_price() == 150.0  # (100 + 200) / 2
+
+
+def test_middle_price_empty_category():
+    category = Category("Пусто", "Нет товаров", [])
+    assert category.middle_price() == 0
