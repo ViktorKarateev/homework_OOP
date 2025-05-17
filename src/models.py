@@ -38,6 +38,9 @@ class Product(LoggingMixin, BaseProduct):
     """Класс продукта с характеристиками."""
 
     def __init__(self, name: str, description: str, price: float, quantity: int):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         super().__init__(name, description, price, quantity)  # Вызываем конструктор родителя
 
     def get_info(self):
@@ -78,6 +81,13 @@ class Category:
         self.__products = products  # Делаем products приватным
         Category.category_count += 1
         Category.product_count += len(products)
+
+    def middle_price(self):
+        """Возвращает средний ценник всех товаров в категории."""
+        try:
+            return sum(product.price for product in self.__products) / len(self.__products)
+        except ZeroDivisionError:
+            return 0
 
     def add_product(self, product):
         """Добавляет продукт в категорию, если он является экземпляром Product или его наследников."""
